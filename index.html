@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw - Open Source 2D Game Engine</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0d0d1a;
+      color: #e0e0ff;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a1a3e 0%, #0d1b4b 60%, #0a0a1a 100%);
+      padding: 60px 20px 40px;
+      text-align: center;
+      border-bottom: 2px solid #3a3a8a;
+    }
+
+    header .logo {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fff;
+      text-shadow: 0 0 30px #6e6ef5, 0 0 60px #4444cc;
+    }
+
+    header .logo span { color: #6e6ef5; }
+
+    header .tagline {
+      margin-top: 12px;
+      font-size: 1.2rem;
+      color: #a0a0cc;
+      letter-spacing: 1px;
+    }
+
+    header .badge {
+      display: inline-block;
+      margin-top: 20px;
+      background: #6e6ef5;
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: #13132b;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      border-bottom: 1px solid #2a2a5a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #a0a0cc;
+      text-decoration: none;
+      padding: 14px 28px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    nav a:hover { color: #fff; background: #1e1e4a; }
+
+    /* ── Sections ── */
+    section {
+      max-width: 960px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #3a3a8a;
+    }
+
+    h2 .icon { margin-right: 10px; }
+
+    p { margin-bottom: 16px; color: #c0c0e0; }
+
+    /* ── Hero Banner ── */
+    .hero {
+      background: linear-gradient(135deg, #1a1a4e, #0d0d2e);
+      border: 1px solid #3a3a8a;
+      border-radius: 12px;
+      padding: 50px 40px;
+      text-align: center;
+      margin: 40px auto;
+      max-width: 960px;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 680px;
+      margin: 0 auto 28px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #6e6ef5;
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 6px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn:hover { background: #5555dd; transform: translateY(-2px); }
+
+    .btn.outline {
+      background: transparent;
+      border: 2px solid #6e6ef5;
+      color: #6e6ef5;
+    }
+
+    .btn.outline:hover { background: #6e6ef520; }
+
+    /* ── Feature Grid ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: #13132b;
+      border: 1px solid #2a2a5a;
+      border-radius: 10px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover { border-color: #6e6ef5; transform: translateY(-4px); }
+
+    .card .icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+
+    .card h3 {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .card p { font-size: 0.95rem; margin: 0; }
+
+    /* ── Screenshots / Highlight ── */
+    .highlight {
+      background: #13132b;
+      border-left: 4px solid #6e6ef5;
+      border-radius: 0 8px 8px 0;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+
+    .highlight h3 { color: #6e6ef5; margin-bottom: 8px; }
+
+    /* ── Code Block ── */
+    pre {
+      background: #0a0a18;
+      border: 1px solid #2a2a5a;
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      color: #a0f0a0;
+      margin: 16px 0;
+    }
+
+    /* ── Timeline ── */
+    .timeline { margin-top: 24px; }
+
+    .tl-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 28px;
+      align-items: flex-start;
+    }
+
+    .tl-dot {
+      width: 14px;
+      height: 14px;
+      background: #6e6ef5;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px #6e6ef5;
+    }
+
+    .tl-item h4 { color: #fff; margin-bottom: 4px; }
+    .tl-item p { margin: 0; font-size: 0.95rem; }
+
+    /* ── Stats ── */
+    .stats {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+
+    .stat {
+      background: #13132b;
+      border: 1px solid #2a2a5a;
+      border-radius: 10px;
+      padding: 24px 32px;
+      text-align: center;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat .num {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #6e6ef5;
+    }
+
+    .stat .label { font-size: 0.85rem; color: #8080aa; margin-top: 4px; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: #0a0a18;
+      border-top: 1px solid #2a2a5a;
+      color: #6060aa;
+      font-size: 0.9rem;
+      margin-top: 80px;
+    }
+
+    footer a { color: #6e6ef5; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo">Open<span>Claw</span></div>
+  <div class="tagline">Open-Source Recreation of the Classic Captain Claw Platformer</div>
+  <span class="badge">Free &amp; Open Source</span>
+</header>
+
+<!-- ── Navigation ── -->
+<nav>
+  <a href="#about">About</a>
+  <a href="#features">Features</a>
+  <a href="#technical">Technical</a>
+  <a href="#history">History</a>
+  <a href="#contribute">Contribute</a>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <h1>Relive Captain Claw — Reimagined</h1>
+  <p>
+    OpenClaw is a faithful, open-source reimplementation of <em>Claw</em> (1997) by Monolith Productions,
+    built from the ground up in C++ with SDL2. Play the classic platformer on modern hardware
+    with improved compatibility, community fixes, and an open codebase.
+  </p>
+  <a class="btn" href="https://github.com/Piotr-Pht-Jasiek/OpenClaw" target="_blank">View on GitHub</a>
+  <a class="btn outline" href="#features">Explore Features</a>
+</div>
+
+<!-- ── About ── -->
+<section id="about">
+  <h2><span class="icon">&#128270;</span>What is OpenClaw?</h2>
+  <p>
+    <strong>OpenClaw</strong> is a community-driven, open-source project that recreates the beloved 1997
+    platformer <em>Captain Claw</em> — originally developed by Monolith Productions and published by GT Interactive.
+    The project reverse-engineers and reimplements the game engine, allowing players to experience the
+    original levels with full compatibility on modern operating systems.
+  </p>
+  <p>
+    Captain Claw features a swashbuckling anthropomorphic cat pirate who fights his way through
+    14 imaginative levels filled with enemies, treasures, and boss battles. OpenClaw preserves
+    every detail of the original experience while making it accessible to new audiences.
+  </p>
+
+  <div class="highlight">
+    <h3>Did you know?</h3>
+    <p>
+      The original <em>Claw</em> was released as freeware in 2002 by Monolith Productions, making it
+      legally available to play. OpenClaw builds on this legacy by providing an open engine
+      that runs the original game assets natively on Linux, macOS, and Windows.
+    </p>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section id="features">
+  <h2><span class="icon">&#10024;</span>Features</h2>
+  <div class="feature-grid">
+    <div class="card">
+      <span class="icon">&#127918;</span>
+      <h3>Faithful Gameplay</h3>
+      <p>All 14 original levels recreated with accurate physics, enemy AI, and item placement matching the 1997 release.</p>
+    </div>
+    <div class="card">
+      <span class="icon">&#128187;</span>
+      <h3>Cross-Platform</h3>
+      <p>Runs natively on Windows, Linux, and macOS thanks to SDL2, with no emulation layer required.</p>
+    </div>
+    <div class="card">
+      <span class="icon">&#127925;</span>
+      <h3>Original Audio</h3>
+      <p>Full support for the original MIDI music and WAV sound effects from the original game files.</p>
+    </div>
+    <div class="card">
+      <span class="icon">&#128444;</span>
+      <h3>High-Res Support</h3>
+      <p>Play at modern resolutions without the constraints of the original 640x480 fixed resolution.</p>
+    </div>
+    <div class="card">
+      <span class="icon">&#128640;</span>
+      <h3>Active Development</h3>
+      <p>Ongoing community contributions bring bug fixes, optimizations, and quality-of-life improvements.</p>
+    </div>
+    <div class="card">
+      <span class="icon">&#128101;</span>
+      <h3>Open Source</h3>
+      <p>Fully open codebase under a permissive license — inspect, modify, and contribute freely.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Technical ── -->
+<section id="technical">
+  <h2><span class="icon">&#9881;</span>Technical Details</h2>
+  <p>
+    OpenClaw is written in <strong>C++</strong> and leverages a modern set of libraries to faithfully
+    recreate the original engine behaviour:
+  </p>
+
+  <div class="stats">
+    <div class="stat"><div class="num">C++</div><div class="label">Primary Language</div></div>
+    <div class="stat"><div class="num">SDL2</div><div class="label">Graphics &amp; Input</div></div>
+    <div class="stat"><div class="num">14</div><div class="label">Original Levels</div></div>
+    <div class="stat"><div class="num">1997</div><div class="label">Original Release</div></div>
+  </div>
+
+  <div class="highlight">
+    <h3>Core Technology Stack</h3>
+    <p><strong>SDL2</strong> — Window management, rendering, input, and audio mixing</p>
+    <p><strong>Box2D</strong> — Physics simulation for accurate collision and movement</p>
+    <p><strong>TinyXML2</strong> — Parsing of game configuration and level data</p>
+    <p><strong>SDL2_mixer</strong> — MIDI/WAV audio playback matching original game feel</p>
+  </div>
+
+  <h3 style="color:#fff; margin: 24px 0 12px;">Building from Source</h3>
+  <pre># Clone the repository
+git clone https://github.com/Piotr-Pht-Jasiek/OpenClaw.git
+cd OpenClaw
+
+# Install dependencies (Ubuntu/Debian)
+sudo apt install cmake libsdl2-dev libsdl2-mixer-dev \
+     libsdl2-image-dev libbox2d-dev
+
+# Build
+mkdir build &amp;&amp; cd build
+cmake ..
+make -j$(nproc)</pre>
+</section>
+
+<!-- ── History ── -->
+<section id="history">
+  <h2><span class="icon">&#128336;</span>History</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div>
+        <h4>1997 — Original Claw Released</h4>
+        <p>Monolith Productions releases <em>Captain Claw</em> for Windows 95. It becomes a cult classic praised for its detailed sprite art and tight platformer gameplay.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div>
+        <h4>2002 — Released as Freeware</h4>
+        <p>Monolith makes <em>Claw</em> freely available for download, breathing new life into the community and enabling legal redistribution of the game assets.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div>
+        <h4>2015 — OpenClaw Project Begins</h4>
+        <p>Community developers begin reverse-engineering the original engine and building an open-source reimplementation to bring Claw to modern platforms.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div>
+        <h4>Ongoing — Community Development</h4>
+        <p>OpenClaw continues to receive contributions from fans worldwide, improving accuracy, fixing bugs, and expanding platform support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contribute ── -->
+<section id="contribute">
+  <h2><span class="icon">&#129309;</span>Get Involved</h2>
+  <p>
+    OpenClaw is a community effort and welcomes contributors of all skill levels. Whether you're a
+    C++ developer, a level designer, a tester, or just a fan of the original game — there's a place for you.
+  </p>
+  <div class="feature-grid">
+    <div class="card">
+      <span class="icon">&#128030;</span>
+      <h3>Report Bugs</h3>
+      <p>Found something wrong? Open an issue on GitHub with steps to reproduce and help make OpenClaw more accurate.</p>
+    </div>
+    <div class="card">
+      <span class="icon">&#128221;</span>
+      <h3>Write Code</h3>
+      <p>Fork the repository, implement a feature or fix, and submit a pull request. All contributions are reviewed by maintainers.</p>
+    </div>
+    <div class="card">
+      <span class="icon">&#127760;</span>
+      <h3>Spread the Word</h3>
+      <p>Share OpenClaw with classic gaming communities. More players means more feedback and a stronger project.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 40px;">
+    <a class="btn" href="https://github.com/Piotr-Pht-Jasiek/OpenClaw" target="_blank">GitHub Repository</a>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>OpenClaw is an unofficial, community-driven open-source project.</p>
+  <p style="margin-top:8px;">Captain Claw &copy; 1997 Monolith Productions &mdash; released as freeware in 2002.</p>
+  <p style="margin-top:8px;">This page hosted on <a href="https://pages.github.com" target="_blank">GitHub Pages</a>.</p>
+</footer>
+
+</body>
+</html>
